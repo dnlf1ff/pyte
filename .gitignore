@@ -1,0 +1,13 @@
+# Ignore Python cache
+__pycache__/
+*.py[cod]
+
+# build
+build/
+
+# egg
+pyte.egg-info
+
+# thirdorder compiled
+*.c
+*.so
