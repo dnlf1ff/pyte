@@ -1,0 +1,62 @@
+data:
+    input_path: '/data2_1/jinvk/cte/pyte/input.extxyz'  # path (usually extxyz) for target calculation
+    input_args:  # this will pass to ase.io.read
+        format: 'extxyz'
+        index: ':' 
+
+    save_relax: './relax/relax.extxyz'  # if given, relaxed geometries will be saved to this file
+    save_fc2: './fc2/'  # if given, fc2 will saved in this directory
+    save_fc3: './fc3/'
+    save_cond: './cond/'  # save result of conductivity
+    save_control: './control/'  # save shengbte control file
+
+calculator:
+    calc_type: 'sevennet'  # sevennet, sevennet-batch, custom
+    path: '/data2/jinvk/arsenal/mlp/o50mp7a_ft.pth'  # path of potential / if custom, *.py returning ase calculator
+    calc_args:  # args pass to calculator, only for sevennet / sevennet-batch
+              modal: 'omat24'
+    # batch_size: 10  # for sevennet batch calculator, set batch size
+    # avg_atom_num: 10  # for sevennet batch calculator, set avg # of atoms in each batch
+
+relax:
+    # relaxed_input_path: 'relaxed.extxyz'  # if this given, pass relaxation
+    fmax: 0.0001
+    steps: 1000  # max steps for relax
+    opt: 'fire'  # Optimizer: fire or lbfgs
+    cell_filter: 'frechet'  # ase filter for cell relax: frechet, unitcell
+    fix_symm: True  # whether to fix symmetry while relax
+    log: 'relax.log'  # relaxation log file
+
+force_constant:
+    displacement: 0.03  # in Angstrom
+    fc2_supercell: 25.
+    # if int / float, replicate cell to reach this value (unit: Angstrom).
+    # if str, use atoms.info[str]
+    fc3_supercell: 15.
+
+    fc2_type: 'phonopy'  # currently, only phonopy implemented
+    fc3_type: 'shengbte'  # phonopy or shengbte
+
+    fc3_cutoff: 5.
+    # if int / float > 0, cutoff radius (unit: Angstrom)
+    # if int < 0, consider (-int)-th neighbor
+    # if str, use atoms.info[str]
+    # if not given, do not use cutoff
+
+    symmetrize_fc2: False  # if True, symmetrize force constants using phonopy scheme
+    symmetrize_fc3: True
+
+    # load_fc2: False  # if given, fc2 will not be calculated, load from directory
+    # load_fc3: False
+    
+conductivity:
+    solver_type: 'shengbte'
+    # if shengbte, write input file (FORCE_CONSTANTS_{2ND, 3RD}, CONTROL)
+    # if phonopy, calculate transport equation
+    q_points: 19
+    # if int/float or list[int/float]: q-point density in reciprocal space
+    # if str, directly use q-point mesh as atoms.info[str]
+    cond_type: 'bte'  # one of bte and wte. wte only work for solver_type=phonopy
+    temperature: 300  # in Kelvin, can be list, e.g. (300, 1000, 100) will samples (300 to 1000 K in 100 K interval)
+    is_isotope: True  # whether consider isotope effect
+    convergence: False  # if False, use RTA. True only work for solver_type=shengbte

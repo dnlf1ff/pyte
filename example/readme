@@ -1,0 +1,6 @@
+micromamba create -n $ENV python=3.12
+pip install Cython,pymatgen,spglib,sevenn 
+
+-the usual [pip install torch==2.5.1 torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121 + pip install torch-scatter -f https://data.pyg.org/whl/torch-2.5.1+cu121.html] raise issues *no model numpy*)
+- python version(former culprit #1 ..) doesn't seem to matter much (python3.11 throws the same tantrum)
+- this naturally leads us to our first idea
