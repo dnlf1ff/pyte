@@ -5,7 +5,7 @@
 #SBATCH --nodes=1   
 #SBATCH --ntasks=28
 #SBATCH --time=24:00:00 
-#SBATCH --partition=loki4
+#SBATCH --partition=**
 
 echo "SLURM_NTASKS: $SLURM_NTASKS"
 
@@ -16,4 +16,4 @@ if [ -z "$SLURM_NTASKS" ] || [ "$SLURM_NTASKS" -le 0 ]; then
 	exit 1
 fi
 
-pyte /data2_1/jinvk/cte/pyte/inp.yaml 
+pyte /ABS_DIRNAME/inp.yaml 
