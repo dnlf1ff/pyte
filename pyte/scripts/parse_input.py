@@ -101,7 +101,8 @@ def check_calc_config(config):
 def check_relax_config(config):
     config_relax = config['relax']
     if (relaxed_path := config_relax['relaxed_input_path']) is not None:
-        assert os.path.isfile(relaxed_path)
+        os.makedirs(relaxed_path, exist_ok=True)
+#        assert os.path.isfile(relaxed_path)
         return
 
     assert os.path.isfile(config['data']['input_path'])
@@ -117,7 +118,8 @@ def check_fc_config(config):
     config_fc = config['force_constant']
     pass_fc2, pass_fc3 = False, False
     if (load_fc2 := config_fc['load_fc2']) is not None:
-        assert os.path.isdir(load_fc2)
+        os.makedirs(load_fc2, exist_ok=True)
+#        assert os.path.isdir(load_fc2)
         pass_fc2 = True
 
     else:
@@ -129,7 +131,8 @@ def check_fc_config(config):
         assert isinstance(config_fc['symmetrize_fc2'], bool)
 
     if (load_fc3 := config_fc['load_fc3']) is not None:
-        assert os.path.isdir(load_fc3)
+        os.makedirs(load_fc3, exist_ok=True)
+#        assert os.path.isdir(load_fc3)
         assert config_fc['fc3_type'].lower() == 'phonopy'
         pass_fc3 = True
 

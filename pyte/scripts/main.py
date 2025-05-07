@@ -91,7 +91,7 @@ def main():
         write(relax_path, relaxed_atoms_list)
 
     ph3_list = process_fcs_for_ph3(config, relaxed_atoms_list, calc)
-    
+
     if config['conductivity']['solver_type'].lower() == 'shengbte':
         process_shengbte_control(config, relaxed_atoms_list, ph3_list)
     else:
